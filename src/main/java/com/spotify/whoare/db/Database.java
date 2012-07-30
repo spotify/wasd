@@ -1,30 +1,30 @@
 package com.spotify.whoare.db;
 
 import com.typesafe.config.Config;
-import lombok.Data;
-import org.xbill.DNS.TextParseException;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-import java.net.UnknownHostException;
+import java.io.IOException;
 
-@Data
+@AllArgsConstructor
 public class Database {
+    @Getter
     private final Sites sites;
+    @Getter
     private final Hosts hosts;
+    @Getter
     private final Services services;
-    private Records records;
+    @Getter
+    private final Records records;
 
     private static Database current;
 
-    public static void rebuild(Config config) throws TextParseException, UnknownHostException {
-        Config sitesConfig = config.getConfig("Sites");
-        final Sites sites = new Sites(sitesConfig);
+    public static void rebuild(Config config) throws IOException {
+        final Sites sites = new Sites(config.getConfig("Sites"));
         final Hosts hosts = new Hosts();
-        final Services services = new Services(config.getConfig("Services"));
-        final Database inConstruction = new Database(sites, hosts, services);
-        inConstruction.setRecords(new Records(inConstruction));
-        services.fill(inConstruction);
-
-        current = inConstruction;
+        final Records records = new Records(sites, hosts);
+        final Services services = new Services(config.getConfig("Services"), records, hosts);
+        current = new Database(sites, hosts, services, records);
     }
 
     public static Database current() {

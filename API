@@ -1,0 +1,9 @@
+/services
+/services/{name(ap)}
+/services/{name(storage)}/by_site
+/services/{name(dns)}/for/{site(lon)}
+/services/{name(capper)}/in/{site(sto.spotify.net)}
+/hosts
+/hosts/starting_with/{prefix(ursu)}
+/hosts/{name(anahi.ash.spotify.net.)}
+/hosts/{name(libby.lon.spotify.net)}/with_sites

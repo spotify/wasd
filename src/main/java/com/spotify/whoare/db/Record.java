@@ -1,42 +1,55 @@
 package com.spotify.whoare.db;
 
-import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Resolver;
-import org.xbill.DNS.TextParseException;
 
-import java.util.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Slf4j
-@Data
+@ToString(of = "id", includeFieldNames = false)
 public class Record {
     protected enum Type {
         SRV,
         CNAME,
-        A
+        A,
+        PTR,
     }
 
+    @Getter
     private final RecordIdentifier id;
-    private final Map<Site, SiteRecord> zoneRecords;
+    @Getter
+    private final Map<Site, SiteRecord> siteSiteRecordMap;
+    @Getter
+    private final Set<Service> serviceSet = new HashSet<Service>();
 
-    protected Record(RecordIdentifier id, Database database, Resolver resolver) throws TextParseException {
+    Record(RecordIdentifier id, Sites sites, Hosts hosts, Resolver resolver) throws IOException {
         this.id = id;
-        zoneRecords = new HashMap<Site, SiteRecord>();
+        siteSiteRecordMap = new HashMap<Site, SiteRecord>();
 
-        for (Site site: database.getSites().getSiteList()) {
-            log.debug("Getting {} in {}", id, site);
-            zoneRecords.put(site, new SiteRecord(id, site, database, resolver));
+        for (Site site : sites.getSiteSet()) {
+            Record.log.debug("Getting {} in {}", id, site);
+            siteSiteRecordMap.put(site, new SiteRecord(this, site, hosts, resolver));
         }
     }
 
-    @Getter(lazy=true) private final Set<Host> hosts = getHostSet();
+    @Getter(lazy = true)
+    private final Set<Host> hostSet = grabHostSet();
 
-    private Set<Host> getHostSet() {
+    private Set<Host> grabHostSet() {
         Set<Host> hosts = new HashSet<Host>();
-        for (Map.Entry<Site, SiteRecord> entry: zoneRecords.entrySet())
+        for (Map.Entry<Site, SiteRecord> entry : siteSiteRecordMap.entrySet())
             hosts.addAll(entry.getValue().getHostSet());
 
         return hosts;
+    }
+
+    void addToService(Service service) {
+        serviceSet.add(service);
     }
 }

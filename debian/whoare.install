@@ -1,0 +1,2 @@
+target/whoare*.jar usr/share/whoare/
+config/whoare.json etc/spotify/whoare/

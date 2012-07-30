@@ -1,0 +1,11 @@
+{
+  "singles": [
+    ["java",
+     "-Xmx512m",
+     "-Dcom.sun.management.jmxremote.port=8082",
+     "-Dcom.sun.management.jmxremote.authenticate=false",
+     "-cp", "/etc/spotify/whoare:/usr/share/whoare/whoare-1.1.jar",
+     "com.spotify.whoare.service.WhoareService",
+     "server", "/etc/spotify/whoare/whoare.json"]
+  ]
+}

@@ -1,31 +1,35 @@
 package com.spotify.whoare.db;
 
-import lombok.Data;
+import lombok.Getter;
 import org.xbill.DNS.ExtendedResolver;
 import org.xbill.DNS.Resolver;
-import org.xbill.DNS.TextParseException;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-@Data
 public class Records {
-    private final Database database;
-    private final List<Record> records;
-    private final Map<RecordIdentifier, Record> identifierRecordMap;
     private final Resolver resolver;
+    @Getter
+    private final List<Record> recordList;
+    @Getter
+    private final Map<RecordIdentifier, Record> identifierRecordMap;
 
-    Records(Database database) throws UnknownHostException {
-        this.database = database;
+    private final Sites sites;
+    private final Hosts hosts;
+
+    Records(Sites sites, Hosts hosts) throws UnknownHostException {
+        this.sites = sites;
+        this.hosts = hosts;
         resolver = new ExtendedResolver();
-        records = new LinkedList<Record>();
+        recordList = new LinkedList<Record>();
         identifierRecordMap = new HashMap<RecordIdentifier, Record>();
     }
 
-    protected final Record getRecord(RecordIdentifier id) throws TextParseException {
+    final Record getRecord(RecordIdentifier id) throws IOException {
         final Record known = identifierRecordMap.get(id);
         if (known != null)
             return known;
@@ -34,9 +38,9 @@ public class Records {
         }
     }
 
-    private Record getUnknownRecord(RecordIdentifier id) throws TextParseException {
-        final Record record = new Record(id, database, resolver);
-        records.add(record);
+    private Record getUnknownRecord(RecordIdentifier id) throws IOException {
+        final Record record = new Record(id, sites, hosts, resolver);
+        recordList.add(record);
         identifierRecordMap.put(id, record);
         return (record);
     }

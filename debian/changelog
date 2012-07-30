@@ -1,0 +1,11 @@
+whoare (1.1) precise; urgency=low
+
+  * Support for system-wide config (/etc/spotify/whoare/)
+
+ -- Pierre Carrier <pierre@spotify.com>  Tue, 04 Sep 2012 15:38:20 +0200
+
+whoare (1.0-1) unstable; urgency=low
+
+  * Initial release
+
+ -- Pierre Carrier <pierre@spotify.com>  Wed, 01 Aug 2012 01:06:34 +0000

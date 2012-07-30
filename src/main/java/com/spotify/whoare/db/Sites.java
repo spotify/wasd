@@ -2,29 +2,27 @@ package com.spotify.whoare.db;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValue;
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 
-@Data
 public class Sites {
+    @Getter
     private final Map<String, Site> aliasSiteMap;
-    private final List<Site> siteList;
+    @Getter
+    private final HashSet<Site> siteSet;
 
     Sites(Config config) {
         aliasSiteMap = new HashMap<String, Site>();
-        siteList = new LinkedList<Site>();
+        siteSet = new HashSet<Site>();
 
-        for (Map.Entry<String,ConfigValue> entry: config.root().entrySet()) {
+        for (Map.Entry<String, ConfigValue> entry : config.root().entrySet()) {
             Site site = new Site(entry.getKey(), entry.getValue());
-
-            siteList.add(site);
-
+            siteSet.add(site);
             aliasSiteMap.put(site.getName(), site);
-            for (String alias: site.getAliasList())
+            for (String alias : site.getAliasSet())
                 aliasSiteMap.put(alias, site);
         }
     }

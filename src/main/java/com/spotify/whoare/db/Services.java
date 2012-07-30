@@ -2,36 +2,35 @@ package com.spotify.whoare.db;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValue;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.xbill.DNS.TextParseException;
 
+import java.io.IOException;
 import java.util.*;
 
 @Slf4j
-@Data
+@RequiredArgsConstructor
 public class Services {
+    @Getter
     private final Map<String, Service> nameServiceMap;
-    private final List<Service> services;
+    @Getter
+    private final Set<Service> serviceSet;
 
-    private final Config config;
-
-    Services(Config config) {
-        this.config = config;
+    Services(Config config, Records records, Hosts hosts) throws IOException {
         nameServiceMap = new HashMap<String, Service>();
-        services = new LinkedList<Service>();
-    }
+        serviceSet = new HashSet<Service>();
 
-    protected void fill(Database database) throws TextParseException {
-        final Set<Map.Entry<String,ConfigValue>> entries = config.root().entrySet();
-        for (Map.Entry<String, ConfigValue> entry: entries) {
+        final Set<Map.Entry<String, ConfigValue>> entries = config.root().entrySet();
+        for (Map.Entry<String, ConfigValue> entry : entries) {
             final String name = entry.getKey();
-            log.debug("Grabbing service {}", name);
-
             final ConfigValue configValue = entry.getValue();
 
-            final Service service = new Service(entry.getKey(), configValue, database);
-            services.add(service);
+            Services.log.info("Grabbing service {}", name);
+            final Service service = new Service(entry.getKey(), configValue, records, hosts);
+            Services.log.info("Grabbed service {}", name);
+
+            serviceSet.add(service);
             nameServiceMap.put(name, service);
         }
     }
