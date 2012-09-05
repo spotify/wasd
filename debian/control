@@ -2,7 +2,7 @@ Source: whoare
 Section: net
 Priority: extra
 Maintainer: Pierre Carrier <pierre@spotify.com>
-Build-Depends: debhelper (>= 5.0.0), java-sdk, maven2, spotify-supervision2-debhelper
+Build-Depends: debhelper (>= 5.0.0), java-sdk, maven2, spotify-supervision2-debhelper, spotify-maven-config
 Standards-Version: 3.7.2
 
 Package: whoare
