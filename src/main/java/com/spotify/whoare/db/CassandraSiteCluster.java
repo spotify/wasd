@@ -54,7 +54,9 @@ public class CassandraSiteCluster {
 
     final Set<Host> getHostSetFromNode(Hosts hosts, Host node) throws IOException, InterruptedException {
         final Set<Host> hostSet = new HashSet<Host>();
+
         NodeProbe probe = new NodeProbe(node.getReverseName());
+
         final Map<String, String> tokenToEndpointMap = probe.getTokenToEndpointMap();
         for (Map.Entry<String, String> entry : tokenToEndpointMap.entrySet()) {
             log.debug("{} has endpoint {}", this, entry.getValue());
@@ -62,6 +64,7 @@ public class CassandraSiteCluster {
             hostSet.add(host);
             host.addToCassandraSiteCluster(this);
         }
+
         probe.close();
 
         return hostSet;
