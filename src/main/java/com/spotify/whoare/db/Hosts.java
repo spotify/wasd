@@ -47,17 +47,21 @@ public class Hosts {
             return host;
     }
 
+    PTRRecord getFirstPTRRecord(Record[] rrset) throws IOException {
+        for (Record rr : rrset) {
+            if (rr instanceof PTRRecord)
+                return (PTRRecord) rr;
+        }
+
+        throw new IOException("No PTR record returned among " + rrset.length + " answers");
+    }
+
     Host getNewHostByAddr(InetAddress addr) throws IOException {
         final Host host;
 
         final Name reverseName = ReverseMap.fromAddress(addr);
         final Message resp = resolver.send(Message.newQuery(Record.newRecord(reverseName, Type.PTR, DClass.IN)));
-
-        final Record[] answers = resp.getSectionArray(Section.ANSWER);
-        if (answers.length == 0)
-            throw new IOException("DNS lookup failure");
-
-        final PTRRecord answer = (PTRRecord) answers[0];
+        final PTRRecord answer = getFirstPTRRecord(resp.getSectionArray(Section.ANSWER));
         final Name target = answer.getTarget();
 
         host = new Host(addr, target.toString());
