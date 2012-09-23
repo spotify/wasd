@@ -17,17 +17,12 @@ public class Database {
     @Getter
     private final Records records;
 
-    private static Database current;
+    private static Database current = null;
 
-    public static void rebuild(Config config) throws IOException {
-        final Sites sites = new Sites(config.getConfig("Sites"));
-        final Hosts hosts = new Hosts();
-        final Records records = new Records(sites, hosts);
-        final Services services = new Services(config.getConfig("Services"), records, hosts);
-        current = new Database(sites, hosts, services, records);
-    }
-
-    public static Database current() {
-        return current;
+    Database(Config config) throws IOException {
+        sites = new Sites(config.getConfig("Sites"));
+        hosts = new Hosts();
+        records = new Records(sites, hosts);
+        services = new Services(config.getConfig("Services"), records, hosts);
     }
 }
