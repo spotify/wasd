@@ -1,6 +1,7 @@
 package com.spotify.whoare.service;
 
 import com.spotify.whoare.db.Database;
+import com.spotify.whoare.db.DatabaseRefresher;
 import com.spotify.whoare.db.Host;
 import com.spotify.whoare.db.Service;
 import com.spotify.whoare.db.Site;
@@ -21,11 +22,18 @@ import java.util.Set;
 @Slf4j
 @Path("/services")
 public class ServiceResource {
+
+    private final DatabaseRefresher refresher;
+
+    public ServiceResource(DatabaseRefresher refresher) {
+        this.refresher = refresher;
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public JSONArray getServices() {
         final JSONArray res = new JSONArray();
-        for (Service srv : Database.current().getServices().getServiceSet())
+        for (Service srv : refresher.current().getServices().getServiceSet())
             res.add(srv.getName());
         return res;
     }
@@ -34,7 +42,7 @@ public class ServiceResource {
     @Path("/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     public JSONArray getService(@PathParam("name") String name) {
-        final Service service = Database.current().getServices().getNameServiceMap().get(name);
+        final Service service = refresher.current().getServices().getNameServiceMap().get(name);
 
         if (service == null)
             throw new NotFoundException("No such service");
@@ -51,7 +59,7 @@ public class ServiceResource {
     @Path("/{name}/by_site")
     @Produces(MediaType.APPLICATION_JSON)
     public JSONObject getServiceForSite(@PathParam("name") String name) {
-        final Database current = Database.current();
+        final Database current = refresher.current();
         final Service service = current.getServices().getNameServiceMap().get(name);
 
         if (service == null)
@@ -75,7 +83,7 @@ public class ServiceResource {
     @Path("/{name}/for/{site}")
     @Produces(MediaType.APPLICATION_JSON)
     public JSONArray getServiceForSite(@PathParam("name") String name, @PathParam("site") String siteName) {
-        final Database current = Database.current();
+        final Database current = refresher.current();
         final Service service = current.getServices().getNameServiceMap().get(name);
         final Site site = current.getSites().getAliasSiteMap().get(siteName);
 
@@ -97,7 +105,7 @@ public class ServiceResource {
     @Path("/{name}/in/{site}")
     @Produces(MediaType.APPLICATION_JSON)
     public JSONArray getServiceInSite(@PathParam("name") String name, @PathParam("site") String siteName) {
-        final Database current = Database.current();
+        final Database current = refresher.current();
         final Service service = current.getServices().getNameServiceMap().get(name);
         final Site site = current.getSites().getAliasSiteMap().get(siteName);
 

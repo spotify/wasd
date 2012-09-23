@@ -17,8 +17,6 @@ public class Database {
     @Getter
     private final Records records;
 
-    private static Database current = null;
-
     Database(Config config) throws IOException {
         sites = new Sites(config.getConfig("Sites"));
         hosts = new Hosts();

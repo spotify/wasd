@@ -1,6 +1,6 @@
 package com.spotify.whoare.service;
 
-import com.spotify.whoare.db.Database;
+import com.spotify.whoare.db.DatabaseRefresher;
 import com.spotify.whoare.db.Host;
 import com.spotify.whoare.db.Service;
 import com.spotify.whoare.db.Site;
@@ -21,12 +21,19 @@ import java.util.Set;
 @Slf4j
 @Path("/hosts")
 public class HostResource {
+
+    private final DatabaseRefresher refresher;
+
+    public HostResource(DatabaseRefresher refresher) {
+        this.refresher = refresher;
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public JSONArray getHosts() {
         final JSONArray res = new JSONArray();
 
-        for (Host host : Database.current().getHosts().getHostSet())
+        for (Host host : refresher.current().getHosts().getHostSet())
             res.add(host.getReverseName());
 
         return res;
@@ -39,7 +46,7 @@ public class HostResource {
         if (!name.endsWith("."))
             name = name + ".";
 
-        final Host host = Database.current().getHosts().getNameHostMap().get(name);
+        final Host host = refresher.current().getHosts().getNameHostMap().get(name);
         if (host == null)
             throw new NotFoundException("No such host");
 
@@ -57,7 +64,7 @@ public class HostResource {
         if (!name.endsWith("."))
             name = name + ".";
 
-        final Host host = Database.current().getHosts().getNameHostMap().get(name);
+        final Host host = refresher.current().getHosts().getNameHostMap().get(name);
         if (host == null)
             throw new NotFoundException("No such host");
 
@@ -78,7 +85,7 @@ public class HostResource {
     @Path("/starting_with/{prefix}")
     @Produces(MediaType.APPLICATION_JSON)
     public JSONArray getHostByPrefix(@PathParam("prefix") String prefix) {
-        final Set<Host> hostList = Database.current().getHosts().getHostsByPrefix(prefix);
+        final Set<Host> hostList = refresher.current().getHosts().getHostsByPrefix(prefix);
         if (hostList.size() == 0)
             throw new NotFoundException("No such hosts");
 
