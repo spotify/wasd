@@ -4,7 +4,7 @@ import com.typesafe.config.Config;
 
 import java.io.IOException;
 
-public class DatabaseRefresher {
+public class DatabaseHolder {
     private Database current;
 
     public void rebuild(Config config) throws IOException {
