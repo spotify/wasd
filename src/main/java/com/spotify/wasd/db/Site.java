@@ -1,4 +1,4 @@
-package com.spotify.whoare.db;
+package com.spotify.wasd.db;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;

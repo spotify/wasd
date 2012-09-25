@@ -1,11 +1,10 @@
-package com.spotify.whoare.db;
+package com.spotify.wasd.db;
 
 import com.google.common.base.Joiner;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -17,11 +16,11 @@ public class SiteRecord {
     @Getter
     private final Site site;
     @Getter
-    private final com.spotify.whoare.db.Record record;
+    private final com.spotify.wasd.db.Record record;
     @Getter
     private final Set<Host> hostSet;
 
-    SiteRecord(com.spotify.whoare.db.Record parent, Site site, Hosts hosts, Resolver resolver) throws IOException {
+    SiteRecord(com.spotify.wasd.db.Record parent, Site site, Hosts hosts, Resolver resolver) throws IOException {
         this.record = parent;
         this.site = site;
 
@@ -49,7 +48,7 @@ public class SiteRecord {
                 type = Type.PTR;
                 break;
             default:
-                throw new NotImplementedException();
+                throw new IllegalArgumentException();
         }
 
         org.xbill.DNS.Record[] answers = null;

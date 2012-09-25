@@ -17,7 +17,7 @@ build:
 
 binary: build
 	dh binary --until dh_fixperms
-	dh_supervision -p whoare --name whoare
+	dh_supervision -p wasd --name wasd
 	dh binary --after dh_fixperms
 
 clean:

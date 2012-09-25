@@ -1,4 +1,4 @@
-package com.spotify.whoare.db;
+package com.spotify.wasd.db;
 
 import com.typesafe.config.ConfigObject;
 import com.typesafe.config.ConfigValue;

@@ -1,4 +1,4 @@
-package com.spotify.whoare.db;
+package com.spotify.wasd.db;
 
 import com.typesafe.config.Config;
 import lombok.AllArgsConstructor;

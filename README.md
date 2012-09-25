@@ -1,5 +1,5 @@
-whoare, service<->machine discovery
-===================================
+wasd, service<->machine discovery
+=================================
 
 Logo
 ----

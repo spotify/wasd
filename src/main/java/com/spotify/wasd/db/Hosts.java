@@ -1,4 +1,4 @@
-package com.spotify.whoare.db;
+package com.spotify.wasd.db;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

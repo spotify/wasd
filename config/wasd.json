@@ -2,9 +2,9 @@
   "logging": {
     "level": "INFO",
     "file": {
-      "currentLogFilename": "/var/log/whoare.log",
+      "currentLogFilename": "/var/log/wasd.log",
       "enabled": true,
-      "archivedLogFilenamePattern": "/var/log/whoare.log.%d.gz",
+      "archivedLogFilenamePattern": "/var/log/wasd.log.%d.gz",
       "archivedFileCount": 10
     },
     "console": {

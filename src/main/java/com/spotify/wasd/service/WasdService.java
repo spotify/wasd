@@ -1,18 +1,18 @@
-package com.spotify.whoare.service;
+package com.spotify.wasd.service;
 
-import com.spotify.whoare.db.DatabaseHolder;
+import com.spotify.wasd.db.DatabaseHolder;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.config.Configuration;
 import com.yammer.dropwizard.config.Environment;
+import com.yammer.dropwizard.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 @Slf4j
-public class WhoareService extends Service<Configuration> {
+public class WasdService extends Service<Configuration> {
 
     private final DatabaseHolder holder = new DatabaseHolder();
 
@@ -33,12 +33,12 @@ public class WhoareService extends Service<Configuration> {
         environment.addResource(new HostResource(holder));
     }
 
-    WhoareService() {
-        super("whoare");
+    WasdService() {
+        super("wasd");
     }
 
     public static void main(String[] args) throws Exception {
-        new WhoareService().run(args);
+        new WasdService().run(args);
     }
 
     @Slf4j
@@ -68,7 +68,7 @@ public class WhoareService extends Service<Configuration> {
                 try {
                     /* Reload config continuously */
                     final Config config = ConfigFactory.load();
-                    this.setName(String.format("whoare-update-%d", System.currentTimeMillis()));
+                    this.setName(String.format("wasd-update-%d", System.currentTimeMillis()));
 
                     final Thread updateThread = new UpdateThread(config, false, holder);
                     updateThread.start();

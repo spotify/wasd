@@ -1,7 +1,7 @@
-package com.spotify.whoare.service;
+package com.spotify.wasd.service;
 
-import com.spotify.whoare.db.*;
-import com.spotify.whoare.db.DatabaseHolder;
+import com.spotify.wasd.db.*;
+import com.spotify.wasd.db.DatabaseHolder;
 import com.sun.jersey.api.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;

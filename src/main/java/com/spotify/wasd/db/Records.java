@@ -1,4 +1,4 @@
-package com.spotify.whoare.db;
+package com.spotify.wasd.db;
 
 import lombok.Getter;
 import org.xbill.DNS.ExtendedResolver;

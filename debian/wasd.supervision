@@ -4,8 +4,8 @@
      "-Xmx512m",
      "-Dcom.sun.management.jmxremote.port=8082",
      "-Dcom.sun.management.jmxremote.authenticate=false",
-     "-cp", "/etc/spotify/whoare:/usr/share/whoare/*",
-     "com.spotify.whoare.service.WhoareService",
-     "server", "/etc/spotify/whoare/whoare.json"]
+     "-cp", "/etc/spotify/wasd:/usr/share/wasd/*",
+     "com.spotify.wasd.service.WhoareService",
+     "server", "/etc/spotify/wasd/wasd.json"]
   ]
 }

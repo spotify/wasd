@@ -1,0 +1,3 @@
+target/wasd*.jar usr/share/wasd/
+target/lib/*.jar usr/share/wasd/
+config/wasd.json etc/spotify/wasd/
