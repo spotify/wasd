@@ -1,9 +1,9 @@
-/services
-/services/{name(ap)}
-/services/{name(storage)}/by_site
-/services/{name(dns)}/for/{site(lon)}
-/services/{name(capper)}/in/{site(sto.spotify.net)}
-/hosts
-/hosts/starting_with/{prefix(ursu)}
-/hosts/{name(anahi.ash.spotify.net.)}
-/hosts/{name(libby.lon.spotify.net)}/with_sites
+GET /services
+GET /services/{name(ap)}
+GET /services/{name(storage)}/by_site
+GET /services/{name(dns)}/for/{site(lon)}
+GET /services/{name(capper)}/in/{site(sto.spotify.net)}
+GET /hosts
+GET /hosts/starting_with/{prefix(ursu)}
+GET /hosts/{name(anahi.ash.spotify.net.)}
+GET /hosts/{name(libby.lon.spotify.net)}/with_sites
