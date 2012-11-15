@@ -2,8 +2,11 @@
   "singles": [
     ["java",
      "-Xmx512m",
+     "-Dcom.sun.management.jmxremote",
      "-Dcom.sun.management.jmxremote.port=8082",
+     "-Dcom.sun.management.jmxremote.local.only=false",
      "-Dcom.sun.management.jmxremote.authenticate=false",
+     "-Dcom.sun.management.jmxremote.ssl=false",
      "-cp", "/etc/spotify/wasd:/usr/share/wasd/*",
      "com.spotify.wasd.service.WasdService",
      "server", "/etc/spotify/wasd/wasd.json"]
