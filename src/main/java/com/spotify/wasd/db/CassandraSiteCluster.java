@@ -37,10 +37,12 @@ public class CassandraSiteCluster {
                 readHostSet = getHostSetFromNode(hosts, node);
                 log.debug("{} worked for {}", node, this);
                 break;
-            } catch (IOException ignored) {
+            } catch (IOException e) {
                 log.warn("{} failed for {}", node, this);
-            } catch (InterruptedException ignored) {
+                log.warn("{}: {}", node, e);
+            } catch (InterruptedException e) {
                 log.warn("{} failed for {}", node, this);
+                log.warn("{}: {}", node, e);
             }
         }
 
