@@ -6,10 +6,14 @@ import com.typesafe.config.ConfigFactory;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.config.Configuration;
 import com.yammer.dropwizard.config.Environment;
+import com.yammer.metrics.Metrics;
+import com.yammer.metrics.core.Timer;
+import com.yammer.metrics.core.TimerContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class WasdService extends Service<Configuration> {
@@ -20,8 +24,10 @@ public class WasdService extends Service<Configuration> {
     protected void initialize(Configuration configuration, Environment environment) throws Exception {
         try {
             final Thread firstUpdateThread = new UpdateThread(ConfigFactory.load(), true, holder);
+            log.info("Starting first DB update");
             firstUpdateThread.start();
             firstUpdateThread.join();
+            log.info("First DB update finished");
         } catch (Exception e) {
             log.error("Could not perform first update: {}", e);
             System.exit(1);
@@ -48,8 +54,11 @@ public class WasdService extends Service<Configuration> {
         private final boolean exitOnFail;
         private final DatabaseHolder holder;
 
+        private final Timer updates = Metrics.newTimer(UpdateThread.class, "updates", TimeUnit.SECONDS, TimeUnit.HOURS);
+
         @Override
         public void run() {
+            TimerContext ctx = updates.time();
             try {
                 UpdateThread.log.info("Running update thread");
                 holder.rebuild(config);
@@ -57,6 +66,8 @@ public class WasdService extends Service<Configuration> {
                 UpdateThread.log.error("Couldn't rebuild database ({})!", e);
                 if (exitOnFail)
                     System.exit(1);
+            } finally {
+                ctx.stop();
             }
         }
     }
@@ -68,7 +79,7 @@ public class WasdService extends Service<Configuration> {
                 try {
                     /* Reload config continuously */
                     final Config config = ConfigFactory.load();
-                    this.setName(String.format("wasd-update-%d", System.currentTimeMillis()));
+                    this.setName(String.format("wasd-continuous-update-%d", System.currentTimeMillis()));
 
                     final Thread updateThread = new UpdateThread(config, false, holder);
                     updateThread.start();
