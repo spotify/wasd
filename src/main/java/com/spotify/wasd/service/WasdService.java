@@ -3,9 +3,9 @@ package com.spotify.wasd.service;
 import com.spotify.wasd.db.DatabaseHolder;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.config.Configuration;
 import com.yammer.dropwizard.config.Environment;
-import com.yammer.dropwizard.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
