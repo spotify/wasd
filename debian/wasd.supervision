@@ -1,7 +1,8 @@
 {
   "singles": [
     ["java",
-     "-Xmx512m",
+     "-Xms16m",
+     "-Xmx64m",
      "-Dcom.sun.management.jmxremote",
      "-Dcom.sun.management.jmxremote.port=8082",
      "-Dcom.sun.management.jmxremote.local.only=false",
