@@ -58,6 +58,8 @@ public class WasdService extends Service<Configuration> {
 
         @Override
         public void run() {
+            this.setName("wasd-update-" + System.currentTimeMillis());
+
             TimerContext ctx = updates.time();
             try {
                 UpdateThread.log.info("Running update thread");
@@ -75,11 +77,12 @@ public class WasdService extends Service<Configuration> {
     private class ContinuousUpdateThread extends Thread {
         @Override
         public void run() {
+            this.setName("wasd-continuous-update");
+
             while (true) {
                 try {
                     /* Reload config continuously */
                     final Config config = ConfigFactory.load();
-                    this.setName(String.format("wasd-continuous-update-%d", System.currentTimeMillis()));
 
                     final Thread updateThread = new UpdateThread(config, false, holder);
                     updateThread.start();
