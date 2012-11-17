@@ -39,9 +39,11 @@ public class HostResource {
         return res;
     }
 
+    /* will become more complete, we'll need to make it a JSON object first */
     @GET
     @Path("/{name}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Deprecated
     public JSONArray getHost(@PathParam("name") String name) {
         if (!name.endsWith("."))
             name = name + ".";
@@ -60,6 +62,7 @@ public class HostResource {
     @GET
     @Path("/{name}/with_sites")
     @Produces(MediaType.APPLICATION_JSON)
+    @Deprecated
     public JSONObject getHostWithSites(@PathParam("name") String name) {
         if (!name.endsWith("."))
             name = name + ".";
@@ -84,6 +87,7 @@ public class HostResource {
     @GET
     @Path("/starting_with/{prefix}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Deprecated
     public JSONArray getHostByPrefix(@PathParam("prefix") String prefix) {
         final Set<Host> hostList = holder.current().getHosts().getHostsByPrefix(prefix);
         if (hostList.size() == 0)
