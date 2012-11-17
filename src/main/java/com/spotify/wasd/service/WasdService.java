@@ -37,6 +37,7 @@ public class WasdService extends Service<Configuration> {
 
         environment.addResource(new ServiceResource(holder));
         environment.addResource(new HostResource(holder));
+        environment.addResource(new FindHostResource(holder));
     }
 
     WasdService() {
