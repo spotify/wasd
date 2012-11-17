@@ -1,9 +1,22 @@
-GET /services
-GET /services/{name(ap)}
-GET /services/{name(storage)}/by_site
-GET /services/{name(dns)}/for/{site(lon)}
-GET /services/{name(capper)}/in/{site(sto.spotify.net)}
-GET /hosts
-GET /hosts/starting_with/{prefix(ursu)}
-GET /hosts/{name(anahi.ash.spotify.net.)}
-GET /hosts/{name(libby.lon.spotify.net)}/with_sites
+DONE GET /services
+TODO GET /services?descriptions=true
+DONE GET /services/{name(ap)}
+DONE GET /services/{name(storage)}/by_site
+DONE GET /services/{name(dns)}/for/{site(lon)}
+DONE GET /services/{name(capper)}/in/{site(sto.spotify.net)}
+DONE GET /hosts
+DONE GET /hosts/{name(anahi.ash.spotify.net.)}
+TODO GET /hosts/{name(libby.lon.spotify.net)}/full
+TODO GET /hosts/{name(libby.lon.spotify.net)}/description
+TODO GET /hosts/{name(libby.lon.spotify.net)}/contacts
+TODO GET /hosts/{name(libby.lon.spotify.net)}/services
+TODO GET /hosts/{name(libby.lon.spotify.net)}/services?sites=true
+TODO GET /find/hosts/starting_with/{prefix(ursu)}
+TODO GET /find/hosts/matching/{regexp(ursu)}
+
+DONE GET /find/hosts/unresolved
+DONE GET /find/hosts/ring_failures
+
+DEPR GET /hosts/{name(libby.lon.spotify.net)}/with_sites (will become .../services?sites=true)
+DEPR GET /hosts/{name(anahi.ash.spotify.net.)} (will become equivalent to .../full)
+DEPR GET /hosts/starting_with/{prefix(ursu)}
