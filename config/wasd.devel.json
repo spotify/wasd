@@ -1,0 +1,16 @@
+{
+  "logging": {
+    "level": "INFO"
+  },
+  "http": {
+    "connectorType": "blocking",
+    "gzip": {
+      "enabled": false
+    },
+    "requestLog": {
+      "console": {
+        "enabled": true
+      }
+    }
+  }
+}
