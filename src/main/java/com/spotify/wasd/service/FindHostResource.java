@@ -38,13 +38,13 @@ public class FindHostResource {
     @Path("/ring_failures")
     @Produces(MediaType.APPLICATION_JSON)
     public JSONArray getRingFailures() {
-        JSONArray addrArray = new JSONArray();
+        JSONArray namesArray = new JSONArray();
 
         Set<Host> hostsList = holder.current().getHosts().getRingFailureHostsSet();
         for (Host host: hostsList) {
-            addrArray.add(host.getAddress().toString());
+            namesArray.add(host.getReverseName());
         }
 
-        return addrArray;
+        return namesArray;
     }
 }
