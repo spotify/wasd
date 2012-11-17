@@ -29,7 +29,7 @@ public class WasdService extends Service<Configuration> {
             firstUpdateThread.join();
             log.info("First DB update finished");
         } catch (Exception e) {
-            log.error("Could not perform first update: {}", e);
+            log.error("Could not perform first update", e);
             System.exit(43);
         }
 
@@ -66,7 +66,11 @@ public class WasdService extends Service<Configuration> {
                 UpdateThread.log.info("Running update thread");
                 holder.rebuild(config);
             } catch (IOException e) {
-                UpdateThread.log.error("Couldn't rebuild database ({})!", e);
+                UpdateThread.log.error("Couldn't rebuild database!", e);
+                if (exitOnFail)
+                    System.exit(44);
+            } catch (Exception e) { // Config uses unchecked exceptions
+                UpdateThread.log.error("Couldn't rebuild database!", e);
                 if (exitOnFail)
                     System.exit(44);
             } finally {
