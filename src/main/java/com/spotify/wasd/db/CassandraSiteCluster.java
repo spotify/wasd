@@ -38,9 +38,11 @@ public class CassandraSiteCluster {
                 log.debug("{} worked for {}", node, this);
                 break;
             } catch (IOException e) {
+                hosts.reportFailedRingForHost(node);
                 log.warn("{} failed for {}", node, this);
                 log.warn("{}: {}", node, e);
             } catch (InterruptedException e) {
+                hosts.reportFailedRingForHost(node);
                 log.warn("{} failed for {}", node, this);
                 log.warn("{}: {}", node, e);
             }

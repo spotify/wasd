@@ -21,6 +21,10 @@ public class Hosts {
     private final Map<String, Host> nameHostMap;
     @Getter
     private final Set<Host> hostSet;
+    @Getter
+    private final Set<String> unresolvedNamesSet;
+    @Getter
+    private final Set<Host> ringFailureHostsSet;
 
     private Resolver resolver;
 
@@ -29,6 +33,8 @@ public class Hosts {
         addrHostMap = new HashMap<InetAddress, Host>();
         nameHostMap = new HashMap<String, Host>();
         resolver = new ExtendedResolver();
+        unresolvedNamesSet = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
+        ringFailureHostsSet = Collections.newSetFromMap(new ConcurrentHashMap<Host, Boolean>());
     }
 
     Host getHostByAddr(InetAddress addr) throws IOException {
@@ -41,8 +47,14 @@ public class Hosts {
 
     Host getHostByName(String name) throws IOException {
         final Host host = nameHostMap.get(name);
-        if (host == null)
-            return getNewHostByName(name);
+        if (host == null) {
+            try {
+                return getNewHostByName(name);
+            } catch (IOException rethrown) {
+                unresolvedNamesSet.add(name);
+                throw rethrown;
+            }
+        }
         else
             return host;
     }
@@ -54,6 +66,10 @@ public class Hosts {
         }
 
         throw new IOException("No PTR record returned among " + rrset.length + " answers");
+    }
+
+    void reportFailedRingForHost(Host host) {
+        ringFailureHostsSet.add(host);
     }
 
     Host getNewHostByAddr(InetAddress addr) throws IOException {
