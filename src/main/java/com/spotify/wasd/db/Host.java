@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.net.InetAddress;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 @ToString(of = {"address"}, includeFieldNames = false)
@@ -18,9 +16,9 @@ public class Host {
     @Getter
     private final String reverseName;
     @Getter
-    private final Set<SiteRecord> siteRecordSet = new HashSet<SiteRecord>();
+    private final Set<SiteRecord> siteRecordSet = Collections.newSetFromMap(new ConcurrentHashMap<SiteRecord, Boolean>());
     @Getter
-    private final Set<CassandraSiteCluster> cassandraSiteClusterSet = new HashSet<CassandraSiteCluster>();
+    private final Set<CassandraSiteCluster> cassandraSiteClusterSet = Collections.newSetFromMap(new ConcurrentHashMap<CassandraSiteCluster, Boolean>());
 
     void addToSiteRecord(SiteRecord siteRecord) {
         siteRecordSet.add(siteRecord);

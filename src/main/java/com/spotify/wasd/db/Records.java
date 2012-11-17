@@ -6,15 +6,15 @@ import org.xbill.DNS.Resolver;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Records {
     private final Resolver resolver;
     @Getter
-    private final List<Record> recordList;
+    private final Set<Record> recordSet;
     @Getter
     private final Map<RecordIdentifier, Record> identifierRecordMap;
 
@@ -25,22 +25,25 @@ public class Records {
         this.sites = sites;
         this.hosts = hosts;
         resolver = new ExtendedResolver();
-        recordList = new LinkedList<Record>();
-        identifierRecordMap = new HashMap<RecordIdentifier, Record>();
+        recordSet = Collections.newSetFromMap(new ConcurrentHashMap<Record, Boolean>());
+        identifierRecordMap = new ConcurrentHashMap<RecordIdentifier, Record>();
     }
 
     final Record getRecord(RecordIdentifier id) throws IOException {
-        final Record known = identifierRecordMap.get(id);
-        if (known != null)
-            return known;
-        else {
-            return getUnknownRecord(id);
+        synchronized (identifierRecordMap) {
+            final Record known = identifierRecordMap.get(id);
+            if (known != null)
+                return known;
+            else {
+                return getUnknownRecord(id);
+            }
         }
     }
 
+    /* always call from synchronized(identifierRecordMap)  */
     private Record getUnknownRecord(RecordIdentifier id) throws IOException {
         final Record record = new Record(id, sites, hosts, resolver);
-        recordList.add(record);
+        recordSet.add(record);
         identifierRecordMap.put(id, record);
         return (record);
     }

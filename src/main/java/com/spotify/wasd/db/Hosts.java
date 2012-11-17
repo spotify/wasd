@@ -8,10 +8,11 @@ import org.xbill.DNS.Record;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class Hosts {
@@ -29,10 +30,10 @@ public class Hosts {
     private Resolver resolver;
 
     Hosts() throws UnknownHostException {
-        hostSet = new HashSet<Host>();
-        addrHostMap = new HashMap<InetAddress, Host>();
-        nameHostMap = new HashMap<String, Host>();
         resolver = new ExtendedResolver();
+        hostSet = Collections.newSetFromMap(new ConcurrentHashMap<Host, Boolean>());
+        addrHostMap = new ConcurrentHashMap<InetAddress, Host>();
+        nameHostMap = new ConcurrentHashMap<String, Host>();
         unresolvedNamesSet = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
         ringFailureHostsSet = Collections.newSetFromMap(new ConcurrentHashMap<Host, Boolean>());
     }
