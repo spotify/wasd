@@ -3,6 +3,7 @@
     ["java",
      "-Xms16m",
      "-Xmx64m",
+     "-XX:+UseCompressedOops",
      "-Dcom.sun.management.jmxremote",
      "-Dcom.sun.management.jmxremote.port=8082",
      "-Dcom.sun.management.jmxremote.local.only=false",
