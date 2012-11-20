@@ -3,7 +3,13 @@ package com.spotify.wasd.db;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.cassandra.tools.NodeProbe;
+import org.apache.cassandra.thrift.Cassandra;
+import org.apache.cassandra.thrift.InvalidRequestException;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.transport.TFramedTransport;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -59,17 +65,27 @@ public class CassandraSiteCluster {
     final Set<Host> getHostSetFromNode(Hosts hosts, Host node) throws IOException, InterruptedException {
         final Set<Host> hostSet = new HashSet<Host>();
 
-        NodeProbe probe = new NodeProbe(node.getReverseName());
+        final TTransport transport = new TFramedTransport(new TSocket(node.getAddress().getHostAddress(), 9160));
+        final TBinaryProtocol protocol = new TBinaryProtocol(transport);
 
-        final Map<String, String> tokenToEndpointMap = probe.getTokenToEndpointMap();
-        for (Map.Entry<String, String> entry : tokenToEndpointMap.entrySet()) {
-            log.debug("{} has endpoint {}", this, entry.getValue());
-            final Host host = hosts.getHostByName(entry.getValue());
-            hostSet.add(host);
-            host.addToCassandraSiteCluster(this);
+        final Cassandra.Client client = new Cassandra.Client(protocol);
+
+        try {
+            Map<String, String> tokenToEndpointMap = client.describe_token_map();
+
+            for (Map.Entry<String, String> entry : tokenToEndpointMap.entrySet()) {
+                log.debug("{} has endpoint {}", this, entry.getValue());
+                final Host host = hosts.getHostByName(entry.getValue());
+                hostSet.add(host);
+                host.addToCassandraSiteCluster(this);
+            }
+        } catch (InvalidRequestException e) {
+            throw new IOException(e);
+        } catch (TException e) {
+            throw new IOException(e);
+        } finally {
+            transport.close();
         }
-
-        probe.close();
 
         return hostSet;
     }
