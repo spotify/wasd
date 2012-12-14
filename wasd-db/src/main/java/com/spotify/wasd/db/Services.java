@@ -58,7 +58,7 @@ public class Services {
             throw new ExecutionException(e);
         }
 
-        for (Future<Exception> future: futures) {
+        for (Future<Exception> future : futures) {
             Exception exception = null;
             try {
                 exception = future.get();

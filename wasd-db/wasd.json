@@ -1,0 +1,28 @@
+{
+  "logging": {
+    "level": "INFO",
+    "file": {
+      "currentLogFilename": "/var/log/wasd.log",
+      "enabled": true,
+      "archivedLogFilenamePattern": "/var/log/wasd.log.%d.gz",
+      "archivedFileCount": 10
+    },
+    "console": {
+      "enabled": false
+    }
+  },
+  "http": {
+    "connectorType": "blocking",
+    "gzip": {
+      "enabled": false
+    },
+    "requestLog": {
+      "console": {
+        "enabled": false
+      },
+      "file": {
+        "enabled": false
+      }
+    }
+  }
+}

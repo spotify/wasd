@@ -27,7 +27,7 @@ public class FindHostResource {
         JSONArray namesArray = new JSONArray();
 
         Set<String> namesList = holder.current().getHosts().getUnresolvedNamesSet();
-        for (String name: namesList) {
+        for (String name : namesList) {
             namesArray.add(name);
         }
 
@@ -41,7 +41,7 @@ public class FindHostResource {
         JSONArray namesArray = new JSONArray();
 
         Set<Host> hostsList = holder.current().getHosts().getRingFailureHostsSet();
-        for (Host host: hostsList) {
+        for (Host host : hostsList) {
             namesArray.add(host.getReverseName());
         }
 

@@ -37,7 +37,7 @@ public class Host {
         for (SiteRecord siteRecord : siteRecordSet)
             services.addAll(siteRecord.getRecord().getServiceSet());
 
-        for (CassandraSiteCluster cassandraSiteCluster: cassandraSiteClusterSet)
+        for (CassandraSiteCluster cassandraSiteCluster : cassandraSiteClusterSet)
             services.addAll(cassandraSiteCluster.getCassandraCluster().getServiceSet());
 
         return services;

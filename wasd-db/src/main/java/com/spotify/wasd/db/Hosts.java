@@ -55,8 +55,7 @@ public class Hosts {
                 unresolvedNamesSet.add(name);
                 throw rethrown;
             }
-        }
-        else
+        } else
             return host;
     }
 
