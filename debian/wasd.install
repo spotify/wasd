@@ -1,2 +1,2 @@
-wasd-all/target/wasd-all-1.4-SNAPSHOT.jar usr/share/wasd/
+wasd-all/target/*.jar usr/share/wasd/
 config/wasd.json etc/spotify/wasd/
