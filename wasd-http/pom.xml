@@ -14,9 +14,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.spotify</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>wasd-db</artifactId>
-            <version>1.4-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.yammer.dropwizard</groupId>
