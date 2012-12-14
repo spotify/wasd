@@ -10,8 +10,28 @@
     <packaging>pom</packaging>
 
     <scm>
-        <connection></connection>
+        <connection>scm:git:https://github.com/spotify/wasd</connection>
     </scm>
+
+    <organization>
+        <name>Spotify</name>
+        <url>http://www.spotify.com/</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>tommie</id>
+            <name>Tommie Gannert</name>
+        </developer>
+        <developer>
+            <id>pierre</id>
+            <name>Pierre Carrier</name>
+        </developer>
+        <developer>
+            <id>krka</id>
+            <name>Kristofer Karlsson</name>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
