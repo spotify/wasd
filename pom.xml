@@ -30,22 +30,6 @@
                         <target>1.6</target>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <configuration>
-                        <outputDirectory>${project.build.directory}/lib/</outputDirectory>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>package-deps</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>copy-dependencies</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
             </plugins>
         </pluginManagement>
     </build>
