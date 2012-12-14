@@ -12,7 +12,7 @@ MVN = mvn3 -B -U -e \
 
 build:
 	dh build --until dh_auto_build
-	$(MVN) package
+	$(MVN) clean package
 	dh build --remaining
 
 binary: build
