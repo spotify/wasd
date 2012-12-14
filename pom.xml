@@ -11,6 +11,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <deps.guava.version>13.0</deps.guava.version>
+        <deps.config.version>1.0.0</deps.config.version>
+        <deps.lombok-pg.version>0.11.3</deps.lombok-pg.version>
     </properties>
 
     <modules>

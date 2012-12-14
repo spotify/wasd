@@ -27,13 +27,13 @@
         <dependency>
             <groupId>com.github.peichhorn</groupId>
             <artifactId>lombok-pg</artifactId>
-            <version>0.11.3</version>
+            <version>${deps.lombok-pg.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
-            <version>1.0.0</version>
+            <version>${deps.config.version}</version>
         </dependency>
     </dependencies>
 </project>
