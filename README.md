@@ -50,6 +50,12 @@ Example configuration
           {Type: 'CNAME', Name: '_user_db_master._tcp'},
           {Type: 'CNAME', Name: '_user_db_slave._tcp'}
         ]
+        Contacts = {
+            Ops = [
+                {Type: person, Email: "user1@example.com"},
+                {Type: person, Email: "user2@example.com"},
+            ]
+        }
       }
       user_contents {Cassandra = [{Type: SRV, Name: _user_contents._cassandra}]}
     }

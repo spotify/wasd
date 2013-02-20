@@ -2,6 +2,7 @@ package com.spotify.wasd.service;
 
 import com.spotify.wasd.db.*;
 import com.sun.jersey.api.NotFoundException;
+import java.util.HashSet;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -115,6 +116,24 @@ public class ServiceResource {
         for (Host host : service.getHostSetInSite(site))
             res.add(host.getReverseName());
 
+        return res;
+    }
+
+    @GET
+    @Path("/{name}/contacts")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JSONObject getServiceContacts(@PathParam("name") String name) {
+        final Database current = holder.current();
+        final Service service = current.getServices().getNameServiceMap().get(name);
+
+        if (service == null)
+            throw new NotFoundException("No such service");
+
+        final Map<String, HashSet<Contact>> contactMap = service.getContactMap();
+
+        final JSONObject res = new JSONObject();
+        for (Map.Entry<String, HashSet<Contact>> entry : contactMap.entrySet())
+            res.put(entry.getKey(), entry.getValue());
         return res;
     }
 }
