@@ -1,10 +1,13 @@
 package com.spotify.wasd.service;
 
+import com.spotify.wasd.db.Contact;
 import com.spotify.wasd.db.DatabaseHolder;
 import com.spotify.wasd.db.Host;
 import com.spotify.wasd.db.Service;
 import com.spotify.wasd.db.Site;
 import com.sun.jersey.api.NotFoundException;
+import java.util.HashMap;
+import java.util.HashSet;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -98,6 +101,34 @@ public class HostResource {
         for (Host host : hostList)
             res.add(host.getReverseName());
 
+        return res;
+    }
+
+    @GET
+    @Path("/{name}/contacts")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Deprecated
+    public JSONObject getHostWithContacts(@PathParam("name") String name) {
+        if (!name.endsWith("."))
+            name = name + ".";
+
+        final Host host = holder.current().getHosts().getNameHostMap().get(name);
+        if (host == null)
+            throw new NotFoundException("No such host");
+
+        final Map<String, HashSet<Contact>> mergedContacts = new HashMap<String, HashSet<Contact>>();
+        for (Service service : host.getServiceSet()) {
+            final Map<String, HashSet<Contact>> contactMap = service.getContactMap();
+            for(Map.Entry<String, HashSet<Contact>> entry : contactMap.entrySet()) {
+                if (mergedContacts.get(entry.getKey())== null) {
+                    mergedContacts.put(entry.getKey(), new HashSet<Contact>());
+                }
+                mergedContacts.get(entry.getKey()).addAll(entry.getValue());
+            }
+        }
+        final JSONObject res = new JSONObject();
+        for (Map.Entry<String, HashSet<Contact>> entry : mergedContacts.entrySet())
+            res.put(entry.getKey(), entry.getValue());
         return res;
     }
 }

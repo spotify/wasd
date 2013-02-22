@@ -18,11 +18,14 @@ public class Service {
     private final Set<Record> recordSet;
     @Getter
     private final Set<CassandraCluster> cassandraClusterSet;
+    @Getter
+    private final Map<String, HashSet<Contact>> contactMap;
 
     Service(String name, ConfigValue configValue, Records records, Hosts hosts) throws IOException {
         this.name = name;
         recordSet = new HashSet<Record>();
         cassandraClusterSet = new HashSet<CassandraCluster>();
+        contactMap = new HashMap<String, HashSet<Contact>>();
 
         final Map<String, ConfigObject> configDict =
                 (Map<String, ConfigObject>) configValue.unwrapped();
@@ -35,6 +38,14 @@ public class Service {
         final List<Map<String, String>> cassandraConfigsList = (List<Map<String, String>>) configDict.get("Cassandra");
         if (cassandraConfigsList != null)
             addCassandraNodes(records, hosts, cassandraConfigsList);
+
+        final Map<String, ConfigValue> contactGroupList = (Map<String, ConfigValue>) configDict.get("Contacts");
+
+        if (contactGroupList != null) {
+            for(Map.Entry<String, ConfigValue> entry: contactGroupList.entrySet()) {
+                addContactConfigs(entry.getKey(), ( List<Map<String, String>> ) entry.getValue());
+            }
+        }
     }
 
     private void addCassandraNodes(Records records, Hosts hosts, List<Map<String, String>> cassandraConfigsList) throws IOException {
@@ -45,6 +56,18 @@ public class Service {
             final CassandraCluster cluster = new CassandraCluster(hosts, records.getRecord(recordIdentifier));
             cassandraClusterSet.add(cluster);
             cluster.addToService(this);
+        }
+    }
+
+    private void addContactConfigs(String contactGroup, List<Map<String, String>> contactConfigsList) throws IOException {
+        for (Map<String, String> contactConfigMap : contactConfigsList) {
+            if (contactMap.get(contactGroup) == null) {
+                contactMap.put(contactGroup, new HashSet<Contact>());
+            }
+            String new_contact_email = contactConfigMap.get("Email");
+            HashSet<Contact> cg = contactMap.get(contactGroup);
+
+            cg.add(new Contact(contactConfigMap));
         }
     }
 
